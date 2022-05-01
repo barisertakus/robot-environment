@@ -1,4 +1,5 @@
 import { Button, TextField } from "@mui/material";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -83,13 +84,20 @@ function RobotArea() {
     setArena(arenaArray);
   };
 
-  // useEffect(() => {
-  //   const { x, y } = robotPosition;
-  //   setArena((prevState) => {
-  //     prevState[y][x] = 1;
-  //     return prevState;
-  //   });
-  // }, []);
+  const getImage = () => {
+    return (
+      <Image
+        alt="robot"
+        src="https://st3.depositphotos.com/1007566/14054/v/380/depositphotos_140546660-stock-illustration-electric-robot-avatar-character.jpg?forcejpeg=true"
+        height={100}
+        width={100}
+      />
+    );
+  };
+
+  const renderRobot = (column) => {
+    return column === 1 && getImage();
+  };
 
   useEffect(() => {
     drawArena();
@@ -102,7 +110,7 @@ function RobotArea() {
           <Row key={i}>
             {row.map((column, i) => (
               <Column key={i} robot={column === 1 ? true : false}>
-                {column === 1 && <h3>Robot is here</h3> }
+                {renderRobot(column)}
               </Column>
             ))}
           </Row>
@@ -149,10 +157,6 @@ const Column = styled.div`
   height: 100px;
   background-color: ${(props) => (props.robot ? "green" : "lightblue")};
 
-  > h3 {
-    color: white;
-    margin: 0;
-  }
 `;
 
 const Buttons = styled.div`
