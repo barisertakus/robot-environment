@@ -4,6 +4,9 @@ const nextConfig = {
   compiler: {
     styledComponents: true
   },
+  images:{
+    domains: ["st3.depositphotos.com"]
+  }
 }
 
 module.exports = nextConfig
