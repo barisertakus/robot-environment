@@ -1,7 +1,10 @@
 import { Button, TextField } from "@mui/material";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import ArenaRow from "./ArenaRow"
+import ArenaColumn from "./ArenaColumn"
+import Buttons from "./Buttons"
 
 const ARENA_HEIGHT = 5;
 const ARENA_WIDTH = 5;
@@ -13,11 +16,8 @@ const arenaArray = [...Array(ARENA_HEIGHT)]
 function RobotArea() {
   const [arena, setArena] = useState([]);
   const [robotPosition, setRobotPosition] = useState({ x: 2, y: 2 });
-  const [step, setStep] = useState(0);
 
-  const handleChange = (event) => {
-    setStep(event.target.value);
-  };
+  const buttonsRef = useRef(null);
 
   const clearRobotFromArena = (position) => {
     const { x, y } = position;
@@ -37,6 +37,7 @@ function RobotArea() {
 
   const generateNewPosition = (position, positionName) => {
     let { x, y } = position;
+    const step = buttonsRef.current.step;
     const stepCount = parseInt(step);
     switch (positionName) {
       case "right":
@@ -107,30 +108,16 @@ function RobotArea() {
     <Container>
       <Arena>
         {arena.map((row, i) => (
-          <Row key={i}>
+          <ArenaRow key={i}>
             {row.map((column, i) => (
-              <Column key={i} robot={column === 1 ? true : false}>
+              <ArenaColumn key={i} robot={column === 1 ? true : false}>
                 {renderRobot(column)}
-              </Column>
+              </ArenaColumn>
             ))}
-          </Row>
+          </ArenaRow>
         ))}
       </Arena>
-      <Buttons>
-        <TextField name="step" onChange={handleChange} type="number" />
-        <Button name="right" variant="contained" onClick={handleClick}>
-          Right
-        </Button>
-        <Button name="down" variant="contained" onClick={handleClick}>
-          Down
-        </Button>
-        <Button name="left" variant="contained" onClick={handleClick}>
-          Left
-        </Button>
-        <Button name="up" variant="contained" onClick={handleClick}>
-          Up
-        </Button>
-      </Buttons>
+      <Buttons ref={buttonsRef} handleClick={handleClick} />
     </Container>
   );
 }
@@ -145,28 +132,4 @@ const Arena = styled.div`
   width: 500px;
   height: 500px;
   border: 1px solid red;
-`;
-
-const Row = styled.div`
-  display: flex;
-`;
-
-const Column = styled.div`
-  border: 1px solid black;
-  width: 100px;
-  height: 100px;
-  background-color: ${(props) => (props.robot ? "green" : "lightblue")};
-
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex;
-  align-items: center;
-  width: 100%;
-
-  > button {
-    margin: 2px;
-  }
 `;
