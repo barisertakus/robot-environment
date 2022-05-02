@@ -5,6 +5,7 @@ import styled from "styled-components";
 import ArenaRow from "./ArenaRow"
 import ArenaColumn from "./ArenaColumn"
 import Buttons from "./Buttons"
+import RobotImage from "./RobotImage"
 
 const ARENA_HEIGHT = 5;
 const ARENA_WIDTH = 5;
@@ -16,6 +17,7 @@ const arenaArray = [...Array(ARENA_HEIGHT)]
 function RobotArea() {
   const [arena, setArena] = useState([]);
   const [robotPosition, setRobotPosition] = useState({ x: 2, y: 2 });
+  const [direction, setDirection] = useState("right");
 
   const buttonsRef = useRef(null);
 
@@ -97,7 +99,7 @@ function RobotArea() {
   };
 
   const renderRobot = (column) => {
-    return column === 1 && getImage();
+    return column === 1 && <RobotImage direction={direction} />;
   };
 
   useEffect(() => {
