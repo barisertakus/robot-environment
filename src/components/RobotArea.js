@@ -4,9 +4,11 @@ import ArenaRow from "./ArenaRow";
 import ArenaColumn from "./ArenaColumn";
 import RobotImage from "./RobotImage";
 import Buttons from "./Buttons";
-import { Alert, Grid, Snackbar } from "@mui/material";
+import { Grid } from "@mui/material";
 import ErrorSnack from "./ErrorSnack";
-import robotService, { getLastStatus, sendScript } from "../service/robotService";
+import robotService from "../service/robotService";
+import { getLocaleString } from "../utils/dateUtils";
+import { getErrorMessage } from "../utils/errorUtils";
 
 const ARENA_HEIGHT = 5;
 const ARENA_WIDTH = 5;
@@ -21,16 +23,14 @@ const fillZero = (arena) => {
 
 function RobotArea() {
   const [arena, setArena] = useState([]);
-  const [robotPosition, setRobotPosition] = useState({ x: 2, y: 2 });
+  const [robotPosition, setRobotPosition] = useState({ x: 0, y: 0 });
   const [direction, setDirection] = useState("right");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const [lastUpdate, setLastUpdate] = useState("");
   const [timerId, setTimerId] = useState(null);
   const [turnAround, setTurnAround] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState("");
   const [realDate, setRealDate] = useState("");
-  // const [turnAroundArray, setTurnAroundArray] = useState([robotPosition]);
-  // const [turnAroundIndex, setTurnAroundIndex] = useState(0);
 
   const handleClose = () => {
     setOpen(false);
@@ -39,13 +39,12 @@ function RobotArea() {
   const buttonsRef = useRef(null);
 
   const clearArena = () => {
-    setArena((prevState) => 
-       fillZero(prevState)
-    );
+    setArena((prevState) => fillZero(prevState));
   };
 
   const clearAndAddRobot = (previousPosition, nextPosition) => {
     const { x, y } = nextPosition;
+
     setArena((prevState) => {
       prevState[previousPosition.y][previousPosition.x] = 0;
       prevState[y][x] = 1;
@@ -53,25 +52,9 @@ function RobotArea() {
     });
   };
 
-  const handleClick = (event) => {
-    const scriptText = buttonsRef.current.script;
-    sendScript(scriptText)
-      .then((res) => {
-        setRobotAndArenaDetails(res);
-        // handleMove();
-      })
-      .catch((error) => {
-        const message = error.response?.data?.message;
-        setMessage(message);
-        setOpen(true);
-        console.log(message);
-      });
-  };
-
-  const startTurnAround = () => {
+  const generateTurnAroundArray = () => {
     const { x, y } = robotPosition;
-    const updatedX = x === 4 ? x - 1 : x + 1;
-    const updatedY = y === 4 ? y - 1 : y + 1;
+    const { updatedX, updatedY } = calculateTurnAroundCoordinates(x, y);
     return [
       { x, y },
       { x: updatedX, y },
@@ -80,45 +63,114 @@ function RobotArea() {
     ];
   };
 
-  const handleMove = () => {
-    const turnAroundArray = startTurnAround();
-    const i = 0;
-    const obj = { i, turnAroundArray };
-    const id = setInterval(() => move(obj), 100);
-    setTimerId(id);
+  const calculateTurnAroundCoordinates = (x, y) => {
+    const updatedX = x === 4 ? x - 1 : x + 1;
+    const updatedY = y === 4 ? y - 1 : y + 1;
+    return { updatedX, updatedY };
+  };
+
+  const startTurnAround = () => {
+    const turnArray = generateTurnAroundArray();
+    const turnMoveIndex = 0;
+    const turnAround = { turnMoveIndex, turnArray };
+    const timerId = setInterval(() => startTurnMove(turnAround), 100);
+    setTimerId(timerId);
   };
 
   const stop = () => {
     clearInterval(timerId);
   };
 
-  const move = (obj) => {
-    obj.i = obj.i + 1 === 4 ? 0 : obj.i + 1;
-    forward(obj);
+  const startTurnMove = (turnAround) => {
+    calculateTurnMoveIndex(turnAround);
+    startForward(turnAround);
   };
 
-  const forward = (obj) => {
+  const calculateTurnMoveIndex = (turnAround) => {
+    const { turnMoveIndex } = turnAround;
+    turnAround.turnMoveIndex = turnMoveIndex + 1 === 4 ? 0 : turnMoveIndex + 1;
+  };
+
+  const startForward = (turnAround) => {
+    const { turnMoveIndex, turnArray } = turnAround;
     setRobotPosition((prevState) => {
-      const newCoordinates = obj.turnAroundArray[obj.i];
+      const newCoordinates = turnArray[turnMoveIndex];
       clearAndAddRobot(prevState, newCoordinates);
       return newCoordinates;
     });
   };
-  // console.log("turnAround",turnAroundArray)
-  // console.log("robotPos",robotPosition)
+
+  const getCurrentScript = () => {
+    return buttonsRef.current?.script;
+  };
+
+  const handleClick = () => {
+    const scriptText = getCurrentScript();
+    robotService
+      .sendScript(scriptText)
+      .then((res) => {
+        setRobotPositionAndArena(res);
+      })
+      .catch((error) => {
+        setErrorAndShowPopup(error);
+        console.log(error);
+      });
+  };
+
+  const getLastAppStatus = () => {
+    robotService
+      .getLastStatus()
+      .then((res) => {
+        setRobotPositionAndArena(res);
+      })
+      .catch((error) => {
+        setErrorAndShowPopup(error);
+        console.log(error);
+      });
+  };
+
+  const setErrorAndShowPopup = (error) => {
+    setMessage(getErrorMessage(error));
+    setOpen(true);
+  };
+
+  const setRobotPositionAndArena = (response) => {
+    const { xcoordinate, ycoordinate, direction, updatedDate, turnAround } =
+      response.data;
+    handleNewPositions(xcoordinate, ycoordinate);
+    setTurnAround(turnAround);
+    handleDirectionAndDate(direction, updatedDate);
+  };
+
+  const handleNewPositions = (xcoordinate, ycoordinate) => {
+    const newCoordinates = { x: xcoordinate, y: ycoordinate };
+    clearArena();
+    clearAndAddRobot(robotPosition, newCoordinates);
+    setRobotPosition(newCoordinates);
+  };
+
+  const handleDirectionAndDate = (direction, updatedDate) => {
+    setDirection(direction.toLowerCase());
+    setLastUpdate(getLocaleString(updatedDate));
+    setRealDate(updatedDate);
+  };
 
   const drawArena = () => {
     setArena(arenaArray);
   };
 
   const renderRobot = (column) => {
-    return column === 1 && <RobotImage direction={direction} />;
+    return isRobot(column) && <RobotImage direction={direction} />;
   };
+
+  const isRobot = (column) => {
+    return column === 1;
+  }
 
   useEffect(() => {
     if (turnAround) {
       stop();
-      handleMove();
+      startTurnAround();
     } else {
       stop();
     }
@@ -129,27 +181,9 @@ function RobotArea() {
   }, []);
 
   useEffect(() => {
-    getLastStatus()
-      .then((res) => {
-        setRobotAndArenaDetails(res);
-        // console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getLastAppStatus();
+    //eslint-disable-next-line
   }, []);
-
-  const setRobotAndArenaDetails = (response) => {
-    const { xcoordinate, ycoordinate, direction, updatedDate } = response.data;
-    const newCoordinates = { x: xcoordinate, y: ycoordinate };
-    clearArena();
-    clearAndAddRobot(robotPosition, newCoordinates);
-    setRobotPosition(newCoordinates);
-    setDirection(direction.toLowerCase());
-    setLastUpdate(new Date(updatedDate).toLocaleString());
-    setTurnAround(response.data.turnAround);
-    setRealDate(updatedDate);
-  };
 
   return (
     <Container container>
@@ -169,8 +203,6 @@ function RobotArea() {
           ref={buttonsRef}
           handleClick={handleClick}
           lastUpdate={lastUpdate}
-          handleMove={handleMove}
-          stop={stop}
         />
       </Grid>
       <ErrorSnack open={open} message={message} handleClose={handleClose} />

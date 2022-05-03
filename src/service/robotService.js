@@ -1,9 +1,13 @@
-import api from "../helpers/api"
+import api from "../helpers/api";
 
-export const getLastStatus = () => {
-  return api.get("robot");
-}
+const robotService = {
+  getLastStatus: () => {
+    return api.get("robot");
+  },
 
-export const sendScript = (scriptText) => {
-  return api.post("robot", { scriptText });
-}
+  sendScript: (scriptText) => {
+    return api.post("robot", { scriptText });
+  },
+};
+
+export default robotService
