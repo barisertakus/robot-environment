@@ -21,21 +21,6 @@ function RobotArea() {
 
   const buttonsRef = useRef(null);
 
-  const clearRobotFromArena = (position) => {
-    const { x, y } = position;
-    setArena((prevState) => {
-      prevState[y][x] = 0;
-      return prevState;
-    });
-  };
-
-  const addRobotToArea = (position) => {
-    const { x, y } = position;
-    setArena((prevState) => {
-      prevState[y][x] = 1;
-      return prevState;
-    });
-  };
 
   const handleClick = (event) => {
     const name = event.target.name;
@@ -44,6 +29,15 @@ function RobotArea() {
       clearRobotFromArena(prevState);
       addRobotToArea(newPosition);
       return newPosition;
+    });
+  };
+
+  const clearAndAddRobot = (previousPosition, nextPosition) => {
+    const { x, y } = nextPosition;
+    setArena((prevState) => {
+      prevState[previousPosition.y][previousPosition.x] = 0;
+      prevState[y][x] = 1;
+      return prevState;
     });
   };
 
