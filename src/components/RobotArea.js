@@ -2,10 +2,10 @@ import { Button, TextField } from "@mui/material";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import ArenaRow from "./ArenaRow"
-import ArenaColumn from "./ArenaColumn"
-import Buttons from "./Buttons"
-import RobotImage from "./RobotImage"
+import ArenaRow from "./ArenaRow";
+import ArenaColumn from "./ArenaColumn";
+import Buttons from "./Buttons";
+import RobotImage from "./RobotImage";
 
 const ARENA_HEIGHT = 5;
 const ARENA_WIDTH = 5;
@@ -37,39 +37,6 @@ function RobotArea() {
     });
   };
 
-  const generateNewPosition = (position, positionName) => {
-    let { x, y } = position;
-    const step = buttonsRef.current.step;
-    const stepCount = parseInt(step);
-    switch (positionName) {
-      case "right":
-        x = checkBorders(x + stepCount, ARENA_WIDTH);
-        break;
-      case "left":
-        x = checkBorders(x - stepCount, ARENA_WIDTH);
-        break;
-      case "up":
-        console.log(checkBorders(y - stepCount, ARENA_HEIGHT));
-        y = checkBorders(y - stepCount, ARENA_HEIGHT);
-        break;
-      case "down":
-        y = checkBorders(y + stepCount, ARENA_HEIGHT);
-        break;
-      default:
-        break;
-    }
-    return { x, y };
-  };
-
-  const checkBorders = (prevPosition, limit) => {
-    const val = prevPosition % limit;
-    if (val < 0) {
-      const absVal = Math.abs(val);
-      return limit - absVal;
-    }
-    return val;
-  };
-
   const handleClick = (event) => {
     const name = event.target.name;
     setRobotPosition((prevState) => {
@@ -85,17 +52,6 @@ function RobotArea() {
     const coordX = Math.floor(Math.random() * (ARENA_HEIGHT + 1));
     arenaArray[2][2] = 1;
     setArena(arenaArray);
-  };
-
-  const getImage = () => {
-    return (
-      <Image
-        alt="robot"
-        src="https://st3.depositphotos.com/1007566/14054/v/380/depositphotos_140546660-stock-illustration-electric-robot-avatar-character.jpg?forcejpeg=true"
-        height={100}
-        width={100}
-      />
-    );
   };
 
   const renderRobot = (column) => {
