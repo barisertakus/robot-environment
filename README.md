@@ -17,3 +17,9 @@
 - The structures in the project were divided into components and refactored.
 - Icons for detecting and showing the robot's direction were added.
 - Material UI icons were used that used SVG for better performance.
+
+### 03.05.2022
+- Frontend-side movement logic was removed, and backend-side movement logic was added.
+- The TurnAround function, which triggers the robot to turn around itself, was implemented.
+- A Snackbar was added to the application to display error messages.
+- The functions for error, date, and TurnAround were all refactored.
