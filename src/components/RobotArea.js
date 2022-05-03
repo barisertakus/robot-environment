@@ -5,6 +5,7 @@ import ArenaColumn from "./ArenaColumn";
 import RobotImage from "./RobotImage";
 import Buttons from "./Buttons";
 import { Alert, Grid, Snackbar } from "@mui/material";
+import ErrorSnack from "./ErrorSnack";
 import robotService, { getLastStatus, sendScript } from "../service/robotService";
 
 const ARENA_HEIGHT = 5;
@@ -22,6 +23,8 @@ function RobotArea() {
   const [arena, setArena] = useState([]);
   const [robotPosition, setRobotPosition] = useState({ x: 2, y: 2 });
   const [direction, setDirection] = useState("right");
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
   const [lastUpdate, setLastUpdate] = useState("");
   const [timerId, setTimerId] = useState(null);
   const [turnAround, setTurnAround] = useState(false);
@@ -170,6 +173,7 @@ function RobotArea() {
           stop={stop}
         />
       </Grid>
+      <ErrorSnack open={open} message={message} handleClose={handleClose} />
     </Container>
   );
 }
