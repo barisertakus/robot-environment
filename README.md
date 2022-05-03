@@ -1,34 +1,19 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Robot Environment
 
-## Getting Started
 
-First, run the development server:
+### 30.04.2022
+- NextJS was used to create a new application. 
+- The analysis of documents and projects was completed.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### 01.05.2022
+- Styled-components and Material UI were used for styling in the project.
+- The arena where the robot will move was created.
+- Rows and columns were added as boxes in the arena.
+- Frontend-side movement logic was added to simulate robot control.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### 02.05.2022
+- An image was provided to symbolize the robot.
+- The image configuration for NextJS was completed.
+- The structures in the project were divided into components and refactored.
+- Icons for detecting and showing the robot's direction were added.
+- Material UI icons were used that used SVG for better performance.
