@@ -9,17 +9,7 @@ import ErrorSnack from "./ErrorSnack";
 import robotService from "../service/robotService";
 import { getLocaleString } from "../utils/dateUtils";
 import { getErrorMessage } from "../utils/errorUtils";
-
-const ARENA_HEIGHT = 5;
-const ARENA_WIDTH = 5;
-
-const arenaArray = [...Array(ARENA_HEIGHT)]
-  .fill(0)
-  .map(() => [...Array(ARENA_WIDTH)].fill(0));
-
-const fillZero = (arena) => {
-  return arena.map((column) => column.fill(0));
-};
+import { fillZero, initArenaArray } from "../utils/arenaDetails";
 
 function RobotArea() {
   const [arena, setArena] = useState([]);
@@ -156,7 +146,7 @@ function RobotArea() {
   };
 
   const drawArena = () => {
-    setArena(arenaArray);
+    setArena(initArenaArray);
   };
 
   const renderRobot = (column) => {
