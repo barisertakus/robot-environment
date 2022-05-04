@@ -31,6 +31,7 @@ describe("Buttons", () => {
       render(<HelpDialog />);
       await user.click(screen.getByRole("button", { name: /help/i }));
     });
+    
     it("renders help dialog", async () => {
       expect(screen.getByText("How to use script")).toBeInTheDocument();
       expect(
