@@ -10,6 +10,7 @@ import robotService from "../service/robotService";
 import { getLocaleString } from "../utils/dateUtils";
 import { getErrorMessage } from "../utils/errorUtils";
 import { fillZero, initArenaArray } from "../utils/arenaDetails";
+import Loading from "./Loading";
 
 function RobotArea() {
   const [arena, setArena] = useState([]);
@@ -21,6 +22,7 @@ function RobotArea() {
   const [turnAround, setTurnAround] = useState(false);
   const [lastUpdate, setLastUpdate] = useState("");
   const [realDate, setRealDate] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const handleClose = () => {
     setOpen(false);
@@ -116,6 +118,9 @@ function RobotArea() {
       .catch((error) => {
         setErrorAndShowPopup(error);
         console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -175,7 +180,9 @@ function RobotArea() {
     //eslint-disable-next-line
   }, []);
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <Container container>
       <ArenaContainer item md={12} lg={6} sm={12} xs={12}>
         <Arena>
@@ -203,10 +210,7 @@ function RobotArea() {
   );
 }
 
-
 export default RobotArea;
-
-
 
 const Container = styled(Grid)`
   display: flex;
