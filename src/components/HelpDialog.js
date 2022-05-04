@@ -11,7 +11,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function HelpDialog({ open, handleOpen, handleClose }) {
+export default function HelpDialog() {
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <div>
       <Button color="warning" variant="contained" onClick={handleOpen}>

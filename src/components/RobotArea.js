@@ -203,7 +203,10 @@ function RobotArea() {
   );
 }
 
+
 export default RobotArea;
+
+
 
 const Container = styled(Grid)`
   display: flex;

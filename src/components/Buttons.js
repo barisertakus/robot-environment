@@ -5,15 +5,6 @@ import HelpDialog from "./HelpDialog";
 
 const Buttons = forwardRef(({ handleClick, lastUpdate }, ref) => {
   const [script, setScript] = useState("");
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleChange = (event) => {
     setScript(event.target.value);
@@ -39,14 +30,10 @@ const Buttons = forwardRef(({ handleClick, lastUpdate }, ref) => {
           autoComplete="off"
         />
         <Button name="right" variant="contained" onClick={handleClick}>
-          Send
+          SEND
         </Button>
         {/* <Button variant="outlined">Help</Button> */}
-        <HelpDialog
-          open={open}
-          handleOpen={handleOpen}
-          handleClose={handleClose}
-        />
+        <HelpDialog />
       </Script>
       {lastUpdate && <div>Last Update : {lastUpdate}</div>}
     </Container>
