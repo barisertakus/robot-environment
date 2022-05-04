@@ -5,6 +5,8 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import styled from "styled-components";
 import Image from "next/image";
+import Lottie from "lottie-react";
+import talkingRobot from "./talking-robot.json";
 
 const IMAGE_URL =
   "https://st3.depositphotos.com/1007566/14054/v/380/depositphotos_140546660-stock-illustration-electric-robot-avatar-character.jpg?forcejpeg=true";
@@ -26,7 +28,7 @@ function RobotImage({ direction }) {
   return (
     <ImageContainer direction={direction}>
       <ImageWrapper>
-        <Image alt="robot" src={IMAGE_URL} height={70} width={70} />
+        <Lottie animationData={talkingRobot} loop />
       </ImageWrapper>
       {renderIcon()}
     </ImageContainer>
@@ -62,6 +64,10 @@ const ImageContainer = styled.div`
 const ImageWrapper = styled.div`
   display: flex;
   height: 100%;
+  svg {
+    width: 80px !important;
+    height: 80px !important;
+  }
 `;
 
 const StyledForwardIcon = styled(ArrowForwardIcon)`
