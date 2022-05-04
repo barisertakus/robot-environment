@@ -59,6 +59,7 @@ export default Buttons;
 
 const Container = styled.div`
   width: 100%;
+  min-width: 500px;
   margin-top: 20px;
   > div {
     width: 100%;

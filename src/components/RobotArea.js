@@ -155,7 +155,7 @@ function RobotArea() {
 
   const isRobot = (column) => {
     return column === 1;
-  }
+  };
 
   useEffect(() => {
     if (turnAround) {
@@ -177,24 +177,27 @@ function RobotArea() {
 
   return (
     <Container container>
-      <Arena item md={6}>
-        {arena.map((row, i) => (
-          <ArenaRow key={i}>
-            {row.map((column, i) => (
-              <ArenaColumn key={i} robot={column === 1 ? true : false}>
-                {renderRobot(column)}
-              </ArenaColumn>
-            ))}
-          </ArenaRow>
-        ))}
-      </Arena>
-      <Grid item md={6} width="100%">
+      <ArenaContainer item md={12} lg={6} sm={12} xs={12}>
+        <Arena>
+          {arena.map((row, i) => (
+            <ArenaRow key={i}>
+              {row.map((column, i) => (
+                <ArenaColumn key={i} robot={column === 1 ? true : false}>
+                  {renderRobot(column)}
+                </ArenaColumn>
+              ))}
+            </ArenaRow>
+          ))}
+        </Arena>
+      </ArenaContainer>
+
+      <ButtonsWrapper item lg={6} md={12} sm={12}>
         <Buttons
           ref={buttonsRef}
           handleClick={handleClick}
           lastUpdate={lastUpdate}
         />
-      </Grid>
+      </ButtonsWrapper>
       <ErrorSnack open={open} message={message} handleClose={handleClose} />
     </Container>
   );
@@ -206,7 +209,20 @@ const Container = styled(Grid)`
   display: flex;
 `;
 
-const Arena = styled(Grid)`
+const Arena = styled.div`
   width: 500px;
   height: 500px;
+  -webkit-box-shadow: 1px 7px 15px -3px rgba(0, 0, 0, 0.74);
+  box-shadow: 1px 7px 15px -3px rgba(0, 0, 0, 0.74);
+`;
+
+const ArenaContainer = styled(Grid)`
+  display: flex;
+  justify-content: center;
+`;
+
+const ButtonsWrapper = styled(Grid)`
+  width: 100%;
+  display: flex;
+  align-items: center;
 `;
