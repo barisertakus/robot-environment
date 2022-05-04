@@ -4,7 +4,6 @@ import {
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import Buttons from "../../components/Buttons";
-import "@testing-library/jest-dom";
 import user from "@testing-library/user-event";
 import HelpDialog from "../../components/HelpDialog";
 
