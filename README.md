@@ -1,5 +1,10 @@
 # Robot Environment
 
+## Application Link
+
+```
+    https://robot-environment.vercel.app/
+```
 
 ### 30.04.2022
 - NextJS was used to create a new application. 
@@ -23,3 +28,14 @@
 - The TurnAround function, which triggers the robot to turn around itself, was implemented.
 - A Snackbar was added to the application to display error messages.
 - The functions for error, date, and TurnAround were all refactored.
+
+### 04.05.2022
+- All the colors were saved in the Colors file.
+- The styles in the arena where the Robot is located were updated.
+- Jest & React Testing Library were used for unit testing.
+- GitHub action were added that will automatically run unit tests after every push to branches.
+
+### 05.05.2022
+- MSW, Mock service worker was used instead of mocking Axios or Fetch.
+- In this way, it will not create a dependency, regardless of how API requests are made.
+- Unit tests were added for Image, loading component and robot arena.
